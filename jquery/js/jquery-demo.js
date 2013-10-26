@@ -16,16 +16,54 @@ var topSongs = [
     {title: 'Summertime Sadness', artist: 'Lana Del Rey & Cedric Gervais', pic: 'http://www.billboard.com/files/styles/thumbnail_140/public/artists/l/17318430.jpg', video: 'http://www.billboard.com/video/vevo/GBUV71201291'}
 ];
 
-
 $(function(){
+    $('.message').html('Document is ready');
+
     $('.click-me').click(function(){
-        alert('Stop Clicking Me!');
+        alert('Hey Stop That!');
     });
 
     $('.toggle-text-button').click(function(){
-        $('.toggle-text').fadeToggle(400);
-        var $this = $(this);
-        $this.html('Hide Text' == $this.html() 
-            ? 'Show Text' : 'Hide Text');
+        $('.toggle-text').slideToggle(500);
     });
-});
+
+    $('.name-input').keyup(function(){
+        var $this = $(this);
+        $('.name').html('Hello ' + $this.val());
+    });
+
+    render(topSongs, $('.template'), $('.top-songs'));
+
+    $('.sort-artist').click(function(){
+        topSongs.sort(function(a,b){
+            return a.artist.localeCompare(b.artist);
+        });
+        render(topSongs, $('.template'), $('.top-songs'));
+    });
+}); // document ready
+
+function render(songs, template, container) {
+    var instance;
+    container.empty();
+    $.each(songs, function(){
+        instance = template.clone();
+        instance.find('.title').html(this.title);
+        instance.find('.artist').html(this.artist);
+        instance.find('.pic').attr({
+            src: this.pic,
+            alt: 'Picture of ' + this.artist
+        });
+
+        if (this.video) {
+            instance.find('.video').attr('href', this.video);
+        }
+        else {
+            instance.find('.video').remove();
+        }
+
+
+        instance.removeClass('template');
+        container.append(instance);
+
+    });
+}
