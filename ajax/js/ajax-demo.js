@@ -19,10 +19,43 @@
 // https://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=processJSON&format=json
 
 
+$(function(){
+	$('.call-server-button').click(function(){
+		$.getJSON('https://courses.washington.edu/info343/ajax/test.php', onServerMessage);
+	});
 
+	getPhotos();
+});
 
+function onServerMessage(data) {
+	$('.server-message').html(data.message);
+}
 
+function getPhotos() {
+	var flickrScript = $(document.createElement('script'));
+	flickrScript.attr('src', 'https://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=processJSON&format=json');
+	$('body').append(flickrScript);
+}
 
+function processJSON(data) {
+	var idx;
+	var photo;
+	var url;
+	var img;
+	var container = $('.flickr-photos');
+
+	for (idx = 0; idx < data.items.length; ++idx) {
+		photo = data.items[idx];
+		url = photo.media.m;
+		img = $(document.createElement('img'));
+		img.attr({
+			src: url,
+			alt: htmlEncode(photo.title)
+		});
+
+		container.append(img);
+	}
+}
 
 //htmlEncode()
 // encodes the passed string of HTML so that it can
