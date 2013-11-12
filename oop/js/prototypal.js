@@ -34,6 +34,7 @@ function createPerson(name, alive) {
 
 function createInigo(alive) {
     var i = createPerson('Inigo Montoya', alive);
+    i.country = 'Spain';
 
     //override introduce()
     var superIntro = wrapSuper(i.introduce, i);
@@ -47,7 +48,10 @@ function createInigo(alive) {
 
 var andre = createPerson('Andre the Giant', false);
 var inigo = createInigo(true);
+var john = createPerson('John');
+
+andre.name = 'Something else';
 
 describePerson(andre);
 describePerson(inigo);
-
+describePerson(john);

@@ -55,6 +55,47 @@ function makeVital(obj, alive) {
     return obj;
 }
 
+function makeEventSource(obj) {
+    var listeners = {};
+
+    obj.on = function(eventName, callback) {
+        var eventListeners = listeners[eventName];
+        if (!eventListeners) {
+            eventListeners = [];
+            listeners[eventName] = eventListeners;
+        }
+
+        eventListeners.push(callback);
+    };
+
+    obj.trigger = function(eventName) {
+        var idx;
+        var eventListeners = listeners[eventName];
+        if (eventListeners) {
+            for (idx = 0; idx < eventListeners.length; ++idx) {
+                eventListeners[idx]();
+            }
+        }
+    }; //trigger
+
+    return obj;
+}
+
+var es = {
+    name: '',
+    setName: function(name) {
+        this.name = name;
+        this.trigger('change');
+    }
+};
+
+es = makeEventSource(es);
+es.on('change', function(){
+    addOutput('change event fired!');
+});
+
+es.setName('foo');
+
 var andre = {
     species: 'human'
 };
@@ -73,4 +114,3 @@ describePerson(billy);
 
 billy.kill();
 describePerson(billy);
-

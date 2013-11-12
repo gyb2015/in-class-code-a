@@ -48,7 +48,10 @@ var InigoMontoya = Class.create(Person, {
 var andre = new Person('Andre the Giant', false);
 var inigo = new InigoMontoya();
 
+
+
 describePerson(andre);
 describePerson(inigo);
 
 addOutput('inigo instaceof Person = ' + (inigo instanceof Person));
+
